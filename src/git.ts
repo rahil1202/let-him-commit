@@ -2,8 +2,22 @@ import fs from "fs";
 import path from "path";
 import os from "os";
 import { execSync } from "child_process";
-import { retry, logInfo, logSuccess, delay } from "./utils.js";
 import cliProgress from "cli-progress";
+import { retry, logInfo, logSuccess, delay } from "./utils.js";
+
+interface CommitItem {
+  isoDay: string;
+  index: number;
+}
+
+interface MakeCommitsOptions {
+  token: string;
+  username: string;
+  repoName: string;
+  schedule: CommitItem[];
+  commitTemplate: string;
+  batchSize: number;
+}
 
 export async function makeCommits({
   token,
@@ -12,7 +26,7 @@ export async function makeCommits({
   schedule,
   commitTemplate,
   batchSize
-}) {
+}: MakeCommitsOptions): Promise<void> {
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "gh-commit-"));
   const repoPath = path.join(tmpDir, repoName);
   const cloneUrl = `https://${token}@github.com/${username}/${repoName}.git`;
@@ -30,17 +44,14 @@ export async function makeCommits({
     const { isoDay, index } = schedule[i];
     fs.appendFileSync(readme, `- Commit for ${isoDay}\n`);
 
-    const msg = commitTemplate
-      .replace("{date}", isoDay)
-      .replace("{index}", index.toString());
-
+    const msg = commitTemplate.replace("{date}", isoDay).replace("{index}", index.toString());
     const gitDate = `${isoDay}T12:00:00+00:00`;
     const env = { ...process.env, GIT_AUTHOR_DATE: gitDate, GIT_COMMITTER_DATE: gitDate };
 
     try {
       execSync(`git add README.md && git commit -m "${msg}" --quiet`, { cwd: repoPath, env });
-    } catch (e) {
-      console.log(`⚠️  Skipped commit ${isoDay} due to: ${e.message}`);
+    } catch (e: any) {
+      console.log(`⚠️ Skipped commit ${isoDay} due to: ${e.message}`);
     }
 
     if ((i + 1) % batchSize === 0 || i === schedule.length - 1) {

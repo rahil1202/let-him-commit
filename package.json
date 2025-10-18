@@ -2,25 +2,41 @@
   "name": "git-back",
   "version": "1.0.0",
   "description": "GitBack - GitHub backdated commit automation tool for educational purposes",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "bin": {
+    "git-back": "dist/index.js"
+  },
+  "type": "module",
   "scripts": {
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "dev": "tsx src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/rahil1202/git-back.git"
   },
-  "keywords": ["github", "commit", "automation", "backdate", "education"],
+  "keywords": [
+    "github",
+    "commit",
+    "automation",
+    "backdate",
+    "education"
+  ],
   "author": "Rahil Vahora",
   "license": "MIT",
-  "type": "module",
   "dependencies": {
     "axios": "^1.12.2",
     "chalk": "^5.6.2",
     "cli-progress": "^3.12.0",
     "inquirer": "^12.10.0",
-    "nodemon": "^3.1.10",
     "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@types/cli-progress": "^3.11.6",
+    "@types/inquirer": "^9.0.9",
+    "@types/node": "^24.8.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
   }
 }
