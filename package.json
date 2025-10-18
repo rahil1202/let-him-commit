@@ -1,7 +1,7 @@
 {
   "name": "let-him-commit",
   "version": "1.0.0",
-  "description": "Let Him Commit - GitHub backdated commit automation tool for educational purposes",
+  "description": "Let Him Commit - GitHub backdated commit automation tool, let you commit in the past/history.",
   "main": "dist/index.js",
   "bin": {
     "let-him-commit": "dist/index.js"
@@ -21,10 +21,14 @@
     "commit",
     "automation",
     "backdate",
-    "education"
+    "education",
+    "cli",
+    "tool",
+    "git",
+    "time-machine"
   ],
   "author": "Rahil Vahora",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "dependencies": {
     "axios": "^1.12.2",
     "chalk": "^5.6.2",
