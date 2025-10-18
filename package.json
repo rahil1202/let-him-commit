@@ -1,7 +1,7 @@
 {
   "name": "let-him-commit",
   "version": "1.0.0",
-  "description": "GitBack - GitHub backdated commit automation tool for educational purposes",
+  "description": "Let Him Commit - GitHub backdated commit automation tool for educational purposes",
   "main": "dist/index.js",
   "bin": {
     "let-him-commit": "dist/index.js"

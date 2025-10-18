@@ -13,7 +13,7 @@ export async function getUserInputs(): Promise<UserInput> {
       ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝ ╚═════╝ 
   `));
 
-  console.log(chalk.yellowBright.bold("GitBack — by Rahil Vahora"));
+  console.log(chalk.yellowBright.bold("Let Him Commit — by Rahil Vahora"));
   console.log(chalk.gray("Time to polish git history — time to flex 😎\n"));
 
   console.log(chalk.bgRed.white.bold("  WARNING  "));
