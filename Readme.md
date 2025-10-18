@@ -1,5 +1,5 @@
 
-# Git-Back - Not the GB! Let Him Cook 🍳
+# Hold up ! Let-Him-Commit  🍳
 
 **By Rahil Vahora**
 
@@ -7,7 +7,7 @@
 
 ## 🔧 What is this repo?
 
-This repository is generated and used by the **Git-Back** tool for educational purposes.  
+This repository is generated and used by the **let-him-commit** tool for educational purposes.  
 It demonstrates backdated GitHub commits, commit patterns, and Git automation using Node.js.
 
 > ⚠️ **Important:** This is for learning only. Do **not** use this to mislead others. Always use your own GitHub account.
@@ -16,7 +16,7 @@ It demonstrates backdated GitHub commits, commit patterns, and Git automation us
 
 ## 📝 How it works
 
-1. The Git-Back tool clones or creates this repository (private by default).  
+1. The let-him-commit tool clones or creates this repository (private by default).  
 2. It generates commits on selected dates to simulate activity.  
 3. Commit messages are customizable using templates.  
 4. Commits are pushed in batches to prevent rate limit issues.
@@ -35,8 +35,8 @@ It demonstrates backdated GitHub commits, commit patterns, and Git automation us
 ## ⚡ How to Use
 
 ```bash
-# Clone the Git-Back tool
-git clone <Git-Back>
+# Clone the let-him-commit tool
+git clone <let-him-commit>
 
 # Install dependencies
 npm install
@@ -59,7 +59,7 @@ Follow the prompts to:
 
 * The repository is private by default for safety.
 * This tool is **for education only**. Use responsibly.
-* Contributions, bug reports, or suggestions are welcome in the Git-Back tool repo.
+* Contributions, bug reports, or suggestions are welcome in the let-him-commit tool repo.
 
 ---
 

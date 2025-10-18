@@ -1,10 +1,10 @@
 {
-  "name": "git-back",
+  "name": "let-him-commit",
   "version": "1.0.0",
   "description": "GitBack - GitHub backdated commit automation tool for educational purposes",
   "main": "dist/index.js",
   "bin": {
-    "git-back": "dist/index.js"
+    "let-him-commit": "dist/index.js"
   },
   "type": "module",
   "scripts": {
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/rahil1202/git-back.git"
+    "url": "https://github.com/rahil1202/let-him-commit.git"
   },
   "keywords": [
     "github",
