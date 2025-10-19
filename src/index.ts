@@ -6,6 +6,9 @@ import { getUserInputs } from "./prompts.js";
 import { getUsername, ensureRepo, checkRateLimit } from "./github.js";
 import { makeCommits } from "./git.js";
 import { logError } from "./utils.js";
+import { renderGraphPreview, renderGraphFromRepo } from "./graph.js";
+import { CONFIG } from "./config.js";
+
 
 interface CommitScheduleItem {
   isoDay: string;
@@ -14,6 +17,7 @@ interface CommitScheduleItem {
 
 async function main(): Promise<void> {
   try {
+  
     const inputs = await getUserInputs();
     const parsed = userInputSchema.safeParse(inputs);
 
@@ -22,6 +26,8 @@ async function main(): Promise<void> {
       console.error(parsed.error.format());
       process.exit(1);
     }
+
+    // const graphMode = CONFIG.LHC_GRAPH_STYLE === 'github' ? 'github' : 'ascii';
 
     const {
       token,
@@ -59,10 +65,14 @@ async function main(): Promise<void> {
       )
     );
 
+    // renderGraphPreview(schedule, graphMode);
+
     const username = await getUsername(token);
     await ensureRepo(token, username, repoName);
     await makeCommits({ token, username, repoName, schedule, commitTemplate, batchSize });
 
+    // renderGraphFromRepo(repoName, startDate, endDate, graphMode);
+    
   } catch (err: any) {
     logError(err.message || err);
     process.exit(1);

@@ -5,5 +5,6 @@ export const CONFIG = {
   MAX_COMMITS_PER_DAY: 10,
   MAX_DATE_RANGE_DAYS: 365,
   RETRY_LIMIT: 3,
-  RETRY_DELAY_MS: 3000
+  RETRY_DELAY_MS: 3000,
+  LHC_GRAPH_STYLE: 'github' as const
 };

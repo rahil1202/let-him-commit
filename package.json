@@ -1,6 +1,6 @@
 {
   "name": "let-him-commit",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "Let Him Commit - GitHub backdated commit automation tool, let you commit in the past/history.",
   "main": "dist/index.js",
   "bin": {
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/rahil1202/let-him-commit.git"
+    "url": "git+https://github.com/rahil1202/let-him-commit.git"
   },
   "keywords": [
     "github",
