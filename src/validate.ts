@@ -10,6 +10,8 @@ export const userInputSchema = z.object({
   maxCommitsPerDay: z.coerce.number().min(1, "Maximum commits must be at least 1."),
   batchSize: z.coerce.number().min(1).max(500, "Batch size must be ≤ 500."),
   commitTemplate: z.string().min(1, "Commit message template required."),
+  dryRun: z.boolean().default(false),
+  autoCleanup: z.boolean().default(false)
 })
 .refine((data) => data.maxCommitsPerDay >= data.minCommitsPerDay, {
   message: "Max commits per day must be ≥ Min commits per day.",

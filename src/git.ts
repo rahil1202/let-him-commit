@@ -17,6 +17,7 @@ interface MakeCommitsOptions {
   schedule: CommitItem[];
   commitTemplate: string;
   batchSize: number;
+  dryRun?: boolean;
 }
 
 export async function makeCommits({
@@ -25,14 +26,17 @@ export async function makeCommits({
   repoName,
   schedule,
   commitTemplate,
-  batchSize
-}: MakeCommitsOptions): Promise<void> {
+  batchSize,
+  dryRun = false
+}: MakeCommitsOptions): Promise<string> {
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "gh-commit-"));
   const repoPath = path.join(tmpDir, repoName);
   const cloneUrl = `https://${token}@github.com/${username}/${repoName}.git`;
 
-  logInfo("Cloning repository...");
-  retry(() => execSync(`git clone ${cloneUrl} ${repoPath}`, { stdio: "inherit" }));
+  if (!dryRun) {
+    logInfo("Cloning repository...");
+    retry(() => execSync(`git clone ${cloneUrl} ${repoPath}`, { stdio: "inherit" }));
+  }
 
   const readme = path.join(repoPath, "README.md");
   if (!fs.existsSync(readme)) fs.writeFileSync(readme, "# Backdated commits\n\n");
@@ -42,27 +46,31 @@ export async function makeCommits({
 
   for (let i = 0; i < schedule.length; i++) {
     const { isoDay, index } = schedule[i];
-    fs.appendFileSync(readme, `- Commit for ${isoDay}\n`);
+
+    if (!dryRun) fs.appendFileSync(readme, `- Commit for ${isoDay}\n`);
 
     const msg = commitTemplate.replace("{date}", isoDay).replace("{index}", index.toString());
-    const gitDate = `${isoDay}T12:00:00+00:00`;
-    const env = { ...process.env, GIT_AUTHOR_DATE: gitDate, GIT_COMMITTER_DATE: gitDate };
 
-    try {
-      execSync(`git add README.md && git commit -m "${msg}" --quiet`, { cwd: repoPath, env });
-    } catch (e: any) {
-      console.log(`⚠️ Skipped commit ${isoDay} due to: ${e.message}`);
-    }
+    if (!dryRun) {
+      const gitDate = `${isoDay}T12:00:00+00:00`;
+      const env = { ...process.env, GIT_AUTHOR_DATE: gitDate, GIT_COMMITTER_DATE: gitDate };
 
-    if ((i + 1) % batchSize === 0 || i === schedule.length - 1) {
-      await retry(() => execSync(`git push origin main`, { cwd: repoPath, stdio: "inherit" }), 3, 5000);
-      await delay(1000);
+      try {
+        execSync(`git add README.md && git commit -m "${msg}" --quiet`, { cwd: repoPath, env });
+      } catch (e: any) {
+        console.log(`⚠️ Skipped commit ${isoDay} due to: ${e.message}`);
+      }
+
+      if ((i + 1) % batchSize === 0 || i === schedule.length - 1) {
+        await retry(() => execSync(`git push origin main`, { cwd: repoPath, stdio: "inherit" }), 3, 5000);
+        await delay(1000);
+      }
     }
 
     bar.update(i + 1);
   }
 
   bar.stop();
-  logSuccess("All commits pushed successfully!");
-  fs.rmSync(tmpDir, { recursive: true, force: true });
+  logSuccess(dryRun ? "Dry run complete! No commits were made." : "All commits pushed successfully!");
+  return repoPath; // return path for cleanup
 }

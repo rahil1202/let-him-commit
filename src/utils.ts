@@ -1,5 +1,7 @@
 import { execSync } from "child_process";
 import chalk from "chalk";
+import inquirer from "inquirer";
+import fs from "fs";
 
 export async function retry<T>(fn: () => Promise<T> | T, retries = 3, delayMs = 3000): Promise<T> {
   for (let attempt = 1; attempt <= retries; attempt++) {
@@ -34,6 +36,43 @@ export function logWarning(message: string): void {
   console.log(chalk.yellow(`⚠️  ${message}`));
 }
 
-export function runGitCommand(command: string, repoPath: string): string {
-  return execSync(`git -C "${repoPath}" ${command}`, { encoding: "utf-8" }).trim();
+// Dry run prompt
+export async function promptDryRun(): Promise<boolean> {
+  const { dryRun } = await inquirer.prompt([
+    {
+      type: "confirm",
+      name: "dryRun",
+      message: chalk.yellow(
+        "🧪 Dry Run Mode: Preview commits without pushing.\n" +
+        "Simulates commit schedule but won't push to GitHub."
+      ),
+      default: false,
+    },
+  ]);
+  return dryRun;
+}
+
+// Auto cleanup prompt
+export async function promptAutoCleanup(): Promise<boolean> {
+  const { autoCleanup } = await inquirer.prompt([
+    {
+      type: "confirm",
+      name: "autoCleanup",
+      message: chalk.yellow(
+        "🧹 Auto Cleanup: Delete temporary cloned repo after commits?\n" +
+        "Keeps your system clean from leftover temp files."
+      ),
+      default: true,
+    },
+  ]);
+  return autoCleanup;
+}
+
+// Cleanup temp repo
+export function cleanupTempRepo(repoPath: string, autoCleanup: boolean): void {
+  if (!autoCleanup) return;
+  if (fs.existsSync(repoPath)) {
+    fs.rmSync(repoPath, { recursive: true, force: true });
+    console.log(chalk.green("🧹 Temporary repo folder deleted!"));
+  }
 }
