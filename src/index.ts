@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import chalk from "chalk";
 import { userInputSchema } from "./validate.js";
 import { getUserInputs } from "./prompts.js";
